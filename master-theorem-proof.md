@@ -24,46 +24,49 @@ methods, which motivates the study of the Master Theorem.
 <h2>The Master Theorem</h2>
 
 <p>
-Many divide-and-conquer algorithms give rise to recurrence relations of a simple and
-common form. The <strong>Master Theorem</strong> helps us analyze the running time of such
-algorithms without explicitly expanding the recursion.
+Many divide-and-conquer algorithms lead to recurrence relations of a common form.
+The <strong>Master Theorem</strong> provides a convenient way to find the asymptotic
+running time of such recurrences without solving them from scratch each time.
 </p>
 
 <p>
-In this setting, we consider recurrences of the form:
+The theorem applies to recurrences of the form:
 </p>
 
 <p>
-<em>T(n) = aT(n/b) + O(n<sup>d</sup>)</em>
+<em>T(n) = aT(n/b) + f(n)</em>
 </p>
 
 <p>
-Here, <em>a</em> is the number of subproblems, each of size <em>n/b</em>, and
-<em>O(n<sup>d</sup>)</em> represents the work done outside the recursive calls, such as
-dividing the problem and combining the results. We assume <em>a ≥ 1</em>,
-<em>b &gt; 1</em>, and <em>T(1) = Θ(1)</em>.
+Here, <em>a</em> represents the number of subproblems, each of size <em>n/b</em>, and
+<em>f(n)</em> denotes the cost of dividing the problem and combining the results.
+We assume that <em>a ≥ 1</em>, <em>b &gt; 1</em>, and <em>T(1) = Θ(1)</em>.
 </p>
 
 <p>
-The Master Theorem compares the values of <em>a</em>, <em>b</em>, and <em>d</em>, and
-distinguishes between the following three cases:
+The Master Theorem compares the function <em>f(n)</em> with
+<em>n<sup>log<sub>b</sub>a</sup></em> and classifies the recurrence into one of the
+following three cases:
 </p>
 
 <p>
 <strong>Case 1:</strong>
-If <em>a &gt; b<sup>d</sup></em>, then the work done in the recursive calls dominates, and
+If <em>f(n) = O(n<sup>log<sub>b</sub>a − ε</sup>)</em> for some constant <em>ε &gt; 0</em>,
+then the work done by the recursive calls dominates, and
 <em>T(n) = Θ(n<sup>log<sub>b</sub>a</sup>)</em>.
 </p>
 
 <p>
 <strong>Case 2:</strong>
-If <em>a = b<sup>d</sup></em>, then the work is evenly balanced across all levels of
-recursion, and
-<em>T(n) = Θ(n<sup>d</sup> log n)</em>.
+If <em>f(n) = Θ(n<sup>log<sub>b</sub>a</sup>)</em>, then the work is evenly distributed
+across all levels of recursion, and
+<em>T(n) = Θ(n<sup>log<sub>b</sub>a</sup> log n)</em>.
 </p>
 
 <p>
 <strong>Case 3:</strong>
-If <em>a &lt; b<sup>d</sup></em>, then the non-recursive work dominates, and
-<em>T(n) = Θ(n<sup>d</sup>)</em>.
+If <em>f(n) = Ω(n<sup>log<sub>b</sub>a + ε</sup>)</em> for some constant <em>ε &gt; 0</em>,
+and the regularity condition holds, then the non-recursive work dominates, and
+<em>T(n) = Θ(f(n))</em>.
 </p>
+
