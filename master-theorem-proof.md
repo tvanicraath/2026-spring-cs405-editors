@@ -70,3 +70,4 @@ and the regularity condition holds, then the non-recursive work dominates, and
 <em>T(n) = Θ(f(n))</em>.
 </p>
 
+
