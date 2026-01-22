@@ -72,7 +72,7 @@ and the regularity condition holds, then the non-recursive work dominates, and
 
 <h2>Proof of the Master Theorem (Recursion Tree Method)</h2>
 
-<img src="recursion-tree.png">
+<img src="editors/recursion-tree.png">
 
 <p>
 From the above recursion tree, we observe the structure of the divide-and-conquer process.
