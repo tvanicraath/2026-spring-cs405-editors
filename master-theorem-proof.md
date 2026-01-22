@@ -247,8 +247,8 @@ a relative to b<sup>d</sup>. This leads directly to the three cases of the Maste
 <h2>Why the Master Theorem Is Not Exhaustive</h2>
 
 <p>
-The Master Theorem provides asymptotic bounds for a large class of
-divide-and-conquer recurrences. However, the three cases of the theorem
+The Master Theorem helps us find the running time of many 
+divide and conquer algorithms. However, the three cases of the theorem
 do not cover all possible recurrences. This limitation follows directly
 from the assumptions made in the proof.
 </p>
