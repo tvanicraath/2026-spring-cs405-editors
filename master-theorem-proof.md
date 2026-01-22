@@ -72,62 +72,19 @@ and the regularity condition holds, then the non-recursive work dominates, and
 
 <h2>Proof of the Master Theorem (Recursion Tree Method)</h2>
 
+<img src="Screenshot 2026-01-22 074551.png" alt="Recursion tree for Master Theorem"
+     style="display:block; margin: 20px auto; max-width: 80%;">
+
 <p>
-We analyze the recurrence
-<em>T(n) = aT(n/b) + O(n<sup>d</sup>)</em>
-using a recursion tree. The idea is to compute the work done at each level
-of recursion and then sum it over all levels.
+From the above recursion tree, we observe the structure of the divide-and-conquer process.
+At the root level, there is a single problem of size <strong>n</strong>. Each problem is
+divided into <strong>a</strong> subproblems, each of size <strong>n/b</strong>.
 </p>
 
 <p>
-After <em>k</em> levels of recursion, there are <em>a<sup>k</sup></em> subproblems, each of
-size <em>n / b<sup>k</sup></em>. The work done by each subproblem at this level is
-<em>O((n / b<sup>k</sup>)<sup>d</sup>)</em>.
+After every <strong>k</strong> levels of recursion, there are
+<strong>a<sup>k</sup></strong> subproblems, each of size
+<strong>n / b<sup>k</sup></strong>.
 </p>
 
-<p>
-Therefore, the total work done at level <em>k</em> is:
-</p>
-
-<p>
-<em>O(n<sup>d</sup> (a / b<sup>d</sup>)<sup>k</sup>)</em>
-</p>
-
-<p>
-The recursion continues until the subproblem size becomes 1, which happens after
-<em>log<sub>b</sub> n</em> levels. Hence, the total running time is obtained by summing
-the work over all levels:
-</p>
-
-<p>
-<em>
-T(n) = O
-\left(
-n<sup>d</sup>
-\sum<sub>k=0</sub><sup>log<sub>b</sub> n</sup>
-\left(\frac{a}{b<sup>d</sup>}\right)<sup>k</sup>
-\right)
-</em>
-</p>
-
-<p>
-The behavior of this summation depends on the value of
-<em>a / b<sup>d</sup></em>.
-</p>
-
-<p>
-If <em>a &lt; b<sup>d</sup></em>, the summation converges to a constant, and
-<em>T(n) = O(n<sup>d</sup>)</em>.
-</p>
-
-<p>
-If <em>a = b<sup>d</sup></em>, each term of the summation is equal, and since there are
-<em>Θ(log n)</em> levels, we get
-<em>T(n) = O(n<sup>d</sup> log n)</em>.
-</p>
-
-<p>
-If <em>a &gt; b<sup>d</sup></em>, the summation is dominated by its last term, and
-<em>T(n) = O(n<sup>log<sub>b</sub>a</sup>)</em>.
-</p>
 
