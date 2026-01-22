@@ -242,3 +242,67 @@ Thus, the proof follows by expressing the total running time as a summation over
 levels of the recursion tree and analyzing this summation for different values of
 a relative to b<sup>d</sup>. This leads directly to the three cases of the Master Theorem.
 </p>
+
+
+<h2>Why the Master Theorem Is Not Exhaustive</h2>
+
+<p>
+The Master Theorem provides asymptotic bounds for a large class of
+divide-and-conquer recurrences. However, the three cases of the theorem
+do not cover all possible recurrences. This limitation follows directly
+from the assumptions made in the proof.
+</p>
+
+<p>
+In the proof, the total running time is expressed as
+</p>
+
+<p>
+T(n) = O(
+n<sup>d</sup>
+∑<sub>k = 0</sub><sup>log<sub>b</sub> n</sup>
+(a / b<sup>d</sup>)<sup>k</sup>
+)
+</p>
+
+<p>
+The Master Theorem relies on the fact that this summation is a
+<strong>geometric series</strong>. The three cases arise from the three
+possible behaviors of a geometric series, depending on whether
+<strong>a / b<sup>d</sup></strong> is less than, equal to, or greater than 1.
+If the running time cannot be reduced to such a summation, the theorem
+does not apply.
+</p>
+
+<p>
+Another important assumption of the Master Theorem is that the problem
+is divided into <strong>a subproblems of equal size</strong>, each of size
+<strong>n / b</strong>. If the subproblems are of unequal sizes, the recursion
+tree is no longer regular, and the summation used in the proof cannot be
+formed. In such cases, the Master Theorem cannot be used.
+</p>
+
+<p>
+Even when the subproblems are of equal size, the theorem may still fail
+if the non-recursive work does not fit cleanly into one of the three
+cases. Consider the recurrence
+</p>
+
+<p>
+<strong>T(n) = 2T(n / 2) + n log n</strong>
+</p>
+
+<p>
+Here, we have <strong>a = 2</strong> and <strong>b = 2</strong>, so
+<strong>n<sup>log<sub>b</sub> a</sup> = n</strong>. However, the additional
+work term <strong>n log n</strong> is asymptotically larger than
+<strong>n</strong> but smaller than <strong>n<sup>1 + ε</sup></strong> for
+any constant <strong>ε &gt; 0</strong>. As a result, it does not satisfy
+any of the three cases of the Master Theorem.
+</p>
+
+<p>
+This example shows that although the Master Theorem is widely applicable,
+its cases are not exhaustive. Some divide-and-conquer recurrences fall
+outside its scope and require alternative methods of analysis.
+</p>
