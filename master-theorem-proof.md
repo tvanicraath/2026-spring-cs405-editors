@@ -17,7 +17,7 @@ time taken by recursive calls on smaller inputs.
 <p>
 As a result, the running time of such algorithms is expressed using
 <strong>recurrence relations</strong>, typically of the form
-<em>T(n) = aT(n/b) + f(n)</em>. To analyze these recurrences efficiently, we need systematic
+T(n) = aT(n/b) + f(n). To analyze these recurrences efficiently, we need systematic
 methods, which motivates the study of the Master Theorem.
 </p>
 
@@ -34,40 +34,40 @@ The theorem applies to recurrences of the form:
 </p>
 
 <p>
-<em>T(n) = aT(n/b) + f(n)</em>
+T(n) = aT(n/b) + f(n)
 </p>
 
 <p>
-Here, <em>a</em> represents the number of subproblems, each of size <em>n/b</em>, and
-<em>f(n)</em> denotes the cost of dividing the problem and combining the results.
-We assume that <em>a ≥ 1</em>, <em>b &gt; 1</em>, and <em>T(1) = Θ(1)</em>.
+Here, a represents the number of subproblems, each of size n/b and
+f(n) denotes the cost of dividing the problem and combining the results.
+We assume that a ≥ 1, b &gt; 1, and T(1) = Θ(1).
 </p>
 
 <p>
-The Master Theorem compares the function <em>f(n)</em> with
-<em>n<sup>log<sub>b</sub>a</sup></em> and classifies the recurrence into one of the
+The Master Theorem compares the function f(n) with
+n<sup>log<sub>b</sub>a</sup> and classifies the recurrence into one of the
 following three cases:
 </p>
 
 <p>
 <strong>Case 1:</strong>
-If <em>f(n) = O(n<sup>log<sub>b</sub>a − ε</sup>)</em> for some constant <em>ε &gt; 0</em>,
+If f(n) = O(n<sup>log<sub>b</sub>a − ε</sup>) for some constant ε &gt; 0,
 then the work done by the recursive calls dominates, and
-<em>T(n) = Θ(n<sup>log<sub>b</sub>a</sup>)</em>.
+T(n) = Θ(n<sup>log<sub>b</sub>a</sup>).
 </p>
 
 <p>
 <strong>Case 2:</strong>
-If <em>f(n) = Θ(n<sup>log<sub>b</sub>a</sup>)</em>, then the work is evenly distributed
+If f(n) = Θ(n<sup>log<sub>b</sub>a</sup>), then the work is evenly distributed
 across all levels of recursion, and
-<em>T(n) = Θ(n<sup>log<sub>b</sub>a</sup> log n)</em>.
+T(n) = Θ(n<sup>log<sub>b</sub>a</sup> log n).
 </p>
 
 <p>
 <strong>Case 3:</strong>
-If <em>f(n) = Ω(n<sup>log<sub>b</sub>a + ε</sup>)</em> for some constant <em>ε &gt; 0</em>,
+If f(n) = Ω(n<sup>log<sub>b</sub>a + ε</sup>) for some constant ε &gt; 0
 and the regularity condition holds, then the non-recursive work dominates, and
-<em>T(n) = Θ(f(n))</em>.
+T(n) = Θ(f(n)).
 </p>
 
 <h2>Proof of the Master Theorem (Recursion Tree Method)</h2>
