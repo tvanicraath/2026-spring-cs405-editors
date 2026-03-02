@@ -1,182 +1,110 @@
 # Longest Increasing Subsequence (LIS) — Efficient Solution
 
-## Introduction
+## Problem Overview
 
-Given an array of integers, the **Longest Increasing Subsequence (LIS)** is the longest subsequence where every next element is strictly greater than the previous one.
+Given an array of $n$ integers:
 
-The straightforward dynamic programming approach solves this in $O(n^2)$ time by reducing it to the LCS problem. However, this becomes too slow for large inputs. In this editorial, we explore the efficient $O(n \log n)$ solution using **Patience Sorting**.
+$A = [a_1, a_2, \dots, a_n]$
 
-## Problem Statement
+Find the length of the longest strictly increasing subsequence. Elements don't need to be consecutive, just in order.
 
-Given an array of $n$ integers :
+**Example:**
 
-$A = [a_1, a_2, a_3, \dots, a_n]$
+For $A = [3, 1, 2, 5, 4]$, one LIS is $[1, 2, 5]$, so the answer is $3$.
 
-Find the length of the longest strictly increasing subsequence, where a subsequence is obtained by deleting some elements without changing the order of the remaining elements.
+---
 
-**Example :**
+## The O(n²) Approach via LCS
 
-```
-Input:  A = [10, 9, 2, 5, 3, 7, 101, 18]
-Output: 4
-Explanation: One LIS is [2, 3, 7, 101]
-```
+In class we saw how to reduce LIS to LCS.
 
-## The O(n²) Approach (Reduction to LCS)
+**Idea:**
 
-We can solve LIS by converting it to the Longest Common Subsequence (LCS) problem:
+- Take the original array $A$
+- Create array $B$ = sorted version of $A$ with duplicates removed
+- Compute LCS of $A$ and $B$
 
-1. Take the original array $A$
-2. Create a sorted copy $B$ with duplicates removed
-3. Find the LCS of $A$ and $B$ — that length is the LIS length
+**Why it works:**
 
-**Why this works:** Any increasing subsequence of $A$ must appear in the same relative order in $B$, because $B$ is sorted. So the longest common subsequence between $A$ and $B$ is exactly the longest increasing subsequence.
+Any increasing subsequence of $A$ appears in sorted order in $B$. So any common subsequence of $A$ and $B$ must be increasing. The LCS gives exactly the LIS.
 
-**Example :**
+**Complexity:**
 
-```
-A = [3, 1, 8, 2, 5]
-B = [1, 2, 3, 5, 8]   (sorted, unique)
+- Time: $O(n^2)$ for the LCS DP
+- Space: $O(n^2)$ for the DP table
 
-LCS of A and B = [1, 2, 5]   → LIS Length = 3
-```
+This works but gets slow for large $n$.
 
-**Time Complexity :** $O(n^2)$ using standard LCS DP
+---
 
-**Space Complexity :** $O(n^2)$ for the DP table
+## The O(n log n) Approach — Patience Sorting
 
-This becomes too slow for large inputs ($n > 10{,}000$).
+### Why is it called Patience Sorting?
 
-## The Efficient O(n log n) Approach — Patience Sorting
+The name comes from a one-person card game called Patience (known as Solitaire in the US).
 
-### The Card Game
+**The game:**
 
-Before jumping into the algorithm, it helps to understand the card game that inspired it — this is exactly where the name "Patience Sorting" comes from.
+- Cards are dealt one by one
+- Each card is placed on the **leftmost pile** whose top card is larger than the current card
+- If no such pile exists, start a new pile on the right
+- Goal: end with as few piles as possible
 
-**The setup :** Take a deck of cards, each labeled with a number. Cards arrive one at a time. You must place each card onto one of the piles on the table, following one simple rule:
+**Key fact:** the number of piles at the end equals the LIS length.
 
-> A card can only be placed on top of a pile whose current top card has a **larger** number. If no such pile exists, start a **new pile** to the right.
-> 
-
-The goal is to finish with as **few piles as possible**. The strategy that achieves this is the **greedy strategy** : always place the card on the **leftmost valid pile** — the leftmost pile whose top card is larger than the current card.
-
-**The key fact :** The number of piles at the end equals exactly the LIS length.
-
-**Why can you only place a smaller card on a larger one?** Because if you place a larger card on a smaller card, you are blocking future smaller cards from being placed there. Placing smaller on larger keeps the tops as small as possible, leaving room for more cards.
-
-**Why does the leftmost pile matter?** Because placing a card on the leftmost valid pile keeps the rightmost piles free for future cards. This greedily minimizes the total number of piles.
+**Why is this called Patience?** At the end of the game, card 1 is always on top of some pile. Remove it, card 2 appears on top somewhere. Keep going and you sort the whole deck. This patient card-by-card sorting is where the name comes from (Mallows, 1963).
 
 ---
 
 ### Card Game Example
 
-Let's play with the deck $[3,\ 1,\ 4,\ 2,\ 5]$ and trace every step. We show the full state of all piles after each card, with the **top card shown first** in each pile.
-
----
-
-**Card = 3**
-
-No piles exist yet, so start a new pile.
+Deck: $[3, 1, 4, 2, 5]$
 
 ```
-Pile 1
-------
-  3
+Card 3 → no piles yet, start Pile 1
+  Pile 1: [3]
+
+Card 1 → Pile 1 top is 3, and 1 < 3 → place here
+  Pile 1: [1, 3]
+
+Card 4 → Pile 1 top is 1, 4 > 1 → no valid pile → start Pile 2
+  Pile 1: [1, 3]   Pile 2: [4]
+
+Card 2 → Pile 1 top is 1, skip. Pile 2 top is 4, 2 < 4 → place here
+  Pile 1: [1, 3]   Pile 2: [2, 4]
+
+Card 5 → Pile 1 top 1, skip. Pile 2 top 2, skip → start Pile 3
+  Pile 1: [1, 3]   Pile 2: [2, 4]   Pile 3: [5]
 ```
 
----
+**3 piles → LIS length = 3.** One valid LIS is $[1, 2, 5]$.
 
-**Card = 1**
-
-Look at top cards from left to right : Pile 1 has top = 3. Since $1 < 3$, we can place 1 on Pile 1.
-
-```
-Pile 1
-------
-  1      ← top (1 was placed on 3)
-  3
-```
-
----
-
-**Card = 4**
-
-Top cards left to right : Pile 1 has top = 1. Since $4 > 1$, we cannot place 4 here. No more piles exist, so start a new pile.
-
-```
-Pile 1   Pile 2
-------   ------
-  1        4
-  3
-```
-
----
-
-**Card = 2**
-
-Top cards left to right : Pile 1 has top = 1. Since $2 > 1$, cannot place here. Pile 2 has top = 4. Since $2 < 4$, place 2 on Pile 2. We use the **leftmost valid pile**.
-
-```
-Pile 1   Pile 2
-------   ------
-  1        2      ← top
-  3        4
-```
-
----
-
-**Card = 5**
-
-Top cards left to right : Pile 1 top = 1, cannot place ($5 > 1$). Pile 2 top = 2, cannot place ($5 > 2$). No valid pile exists, so start a new pile.
-
-```
-Pile 1   Pile 2   Pile 3
-------   ------   ------
-  1        2        5
-  3        4
-```
-
----
-
-**Final result : 3 piles → LIS length = 3.**
-
-One valid LIS is $[1, 2, 5]$ or $[1, 4, 5]$ or $[3, 4, 5]$, all of length 3.
-
-Also notice : the **top cards** of each pile from left to right are $[1,\ 2,\ 5]$ — they are always in sorted (increasing) order. This is not a coincidence; the greedy rule guarantees it.
-
----
-
-**Why is it called Patience Sorting?**
-
-The name was given by C.L. Mallows. At the end of the game, card labeled 1 is always sitting on top of some pile. Remove it, and card 2 is now on top of some pile. Remove that, and so on — the piles naturally allow you to sort the entire deck in order, the way you might patiently sort a hand of cards one by one. In British English, one-person card games are called *patience* games (what Americans call *solitaire*), and this game is one such patience game.
+Notice the pile tops from left to right are always increasing: $[1, 2, 5]$. The placement rule guarantees this.
 
 ---
 
 ### From the Card Game to the Algorithm
 
-In the card game, we only care about the **top card of each pile** — that is the only card that matters when deciding where to place the next card. So instead of tracking entire piles, we just track an array of top cards called $\textit{tails}$ :
+We only care about the top card of each pile. So instead of storing full piles, we store just the tops in an array called $\textit{tails}$:
 
-$\textit{tails}[k] = \text{top card of pile } = \text{smallest possible ending of an increasing subsequence of length } (k+1)$
+$\textit{tails}[k]$ = smallest possible last element of any increasing subsequence of length $k+1$
 
-Since the top cards are always in increasing order from left to right (as we saw in the example), $\textit{tails}$ is always a **sorted array**. This means we can use **binary search** to quickly find the correct pile for each new card — instead of scanning all piles from left to right.
+Since the tops are always sorted, we use **binary search** to find the right pile in $O(\log n)$ instead of scanning left to right.
 
-This is exactly where the $O(\log n)$ per card comes from, giving us $O(n \log n)$ overall.
+**Note:** The final $\textit{tails}$ array is not the actual LIS — it just gives the correct length.
 
-Note that the final $\textit{tails}$ array is **not** the actual LIS — it just gives the correct **length**. The elements in $\textit{tails}$ may come from different subsequences and may not form a valid increasing subsequence themselves.
+---
 
 ## Pseudocode
 
 ```
-LIS_Patience_Sorting(A):
-    n     <- length(A)
+LIS(A):
     tails <- empty array
 
-    for i = 0 to n-1:
-        x     <- A[i]
+    for x in A:
         left  <- 0
         right <- length(tails)
-
-        // binary search for first position where tails[mid] >= x
+        
         while left < right:
             mid <- floor((left + right) / 2)
             if tails[mid] < x:
@@ -185,135 +113,127 @@ LIS_Patience_Sorting(A):
                 right <- mid
 
         if left == length(tails):
-            tails.append(x)   // x is larger than all tails, start new pile
+            tails.append(x)
         else:
             tails[left] <- x
 
     return length(tails)
 ```
 
-## Explanation
+---
 
-1. Start with an empty $\textit{tails}$ array.
-2. For each element $x$ in $A$, perform a binary search on $\textit{tails}$ to find the first position where the value is $\geq x$.
-3. If no such position exists, meaning $x$ is larger than all elements in $\textit{tails}$ :
-    - Append $x$ to $\textit{tails}$.
-    - This means we have found a subsequence longer than any found before.
-4. If such a position is found:
-    - Replace the value at that position with $x$.
-    - This gives a smaller and therefore better ending for that subsequence length.
-5. Repeat steps 2–4 for every element in $A$.
-6. Return the length of $\textit{tails}$ — this is the LIS length.
+## Walkthrough
 
-## Example with Detailed Walkthrough
+$A = [10, 9, 2, 5, 3, 7, 101, 18]$
 
-Let $A = [10,\ 9,\ 2,\ 5,\ 3,\ 7,\ 101,\ 18]$
+| Step | $x$ | tails before | Action | tails after | Length |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 10 | [] | append | [10] | 1 |
+| 2 | 9 | [10] | replace index 0 | [9] | 1 |
+| 3 | 2 | [9] | replace index 0 | [2] | 1 |
+| 4 | 5 | [2] | append | [2, 5] | 2 |
+| 5 | 3 | [2, 5] | replace index 1 | [2, 3] | 2 |
+| 6 | 7 | [2, 3] | append | [2, 3, 7] | 3 |
+| 7 | 101 | [2, 3, 7] | append | [2, 3, 7, 101] | 4 |
+| 8 | 18 | [2, 3, 7, 101] | replace index 3 | [2, 3, 7, 18] | 4 |
 
-| Step | $x$ | $\textit{tails}$ before | First element $\geq x$ | Action | $\textit{tails}$ after | Length |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | 10 | [] | — (empty) | Append | [10] | 1 |
-| 2 | 9 | [10] | index 0 → 10 | Replace | [9] | 1 |
-| 3 | 2 | [9] | index 0 → 9 | Replace | [2] | 1 |
-| 4 | 5 | [2] | not found | Append | [2, 5] | 2 |
-| 5 | 3 | [2, 5] | index 1 → 5 | Replace | [2, 3] | 2 |
-| 6 | 7 | [2, 3] | not found | Append | [2, 3, 7] | 3 |
-| 7 | 101 | [2, 3, 7] | not found | Append | [2, 3, 7, 101] | 4 |
-| 8 | 18 | [2, 3, 7, 101] | index 3 → 101 | Replace | [2, 3, 7, 18] | 4 |
+**LIS length = 4.** One valid LIS is $[2, 3, 7, 101]$.
 
-Final $\textit{tails} = [2,\ 3,\ 7,\ 18]$, so **LIS length = 4**.
+---
 
-Valid LIS examples : $[2, 3, 7, 101]$ or $[2, 3, 7, 18]$.
+## Correctness
 
-Note that $[2, 3, 7, 18]$ happens to match the final $\textit{tails}$ here, but this is not always the case. In general, $\textit{tails}$ is not a valid LIS.
+We keep two invariants true throughout:
 
-## Proof of Correctness
+**Invariant 1: $\textit{tails}$ is always sorted**
 
-We prove correctness by maintaining two invariants throughout the algorithm.
+Binary search finds leftmost $i$ where $\textit{tails}[i] \geq x$, so:
 
-### Invariant 1 : $\textit{tails}$ is always sorted
+$\textit{tails}[0..i-1] < x \leq \textit{tails}[i]$
 
-**Proof by induction :**
+Replacing $\textit{tails}[i]$ with $x$ keeps this order. Appending also keeps it sorted since $x$ is larger than everything. So $\textit{tails}$ stays sorted after every step.
 
-- **Base case :** An empty array is trivially sorted.
-- **Inductive step :** Assume $\textit{tails}$ is sorted before processing $x$. Binary search finds the leftmost index $i$ where $\textit{tails}[i] \geq x$, meaning :
+**Invariant 2: $\textit{tails}[k]$ is the smallest possible ending for length $k+1$**
 
-$\textit{tails}[0 \dots i-1] < x \leq \textit{tails}[i]$
+- Append case: $x$ is the only ending for the new max length, trivially optimal.
+- Replace case: we replace $\textit{tails}[i]$ with a smaller $x$. Any future element that could follow the old ending can also follow $x$, so we never lose options.
 
-If we replace $\textit{tails}[i]$ with $x$ : all elements before $i$ are still $< x$, and all elements after $i$ are $\geq$ the old $\textit{tails}[i] \geq x$, so sorted order is preserved. If we append $x$, then $x$ is larger than all current elements, so sorted order is preserved. Thus $\textit{tails}$ remains sorted after every step.
+From these two invariants: every append finds a longer subsequence, every replace keeps the best possible ending. So $\text{length}(\textit{tails})$ at the end = LIS length.
 
-### Invariant 2 : $\textit{tails}[L-1]$ is always the smallest possible ending for a subsequence of length $L$
+---
 
-**Proof by induction:**
+## Complexity
 
-- **Base case :** After the first element, $\textit{tails}[0]$ equals that element, which is trivially the smallest ending for length 1.
-- **Inductive step :** Consider processing element $x$ :
-    - **Append case :** $x$ is larger than all current tails, so it becomes the only ending for the new maximum length. This is trivially optimal.
-    - **Replace case :** We have $\textit{tails}[i] \geq x$ and $\textit{tails}[i-1] < x$. Replacing $\textit{tails}[i]$ with $x$ gives a strictly smaller ending for length $i+1$. Any future element that could extend the old ending can also extend $x$, since $x \leq \textit{tails}[i]$.
+**Time:** Binary search per element = $O(\log n)$, done for all $n$ elements.
 
-Therefore $\textit{tails}$ always stores the optimal smallest ending for each possible length.
+$$\text{Total} = O(n \log n)$$
 
-### Why $\text{len}(\textit{tails})$ equals the LIS length
+**Space:** $\textit{tails}$ stores at most $n$ elements.
 
-Every append means a strictly longer subsequence was found, so the maximum length grows by 1. Every replace keeps the length the same but improves the ending for future extensions. Since we always maintain the best possible endings, we never miss an opportunity to extend to a longer sequence. Therefore the final length of $\textit{tails}$ equals the LIS length.
+$$\text{Total} = O(n)$$
 
-## A Neat Consequence — LIS or LDS of Size $\sqrt{n}$
+---
 
-Here is a neat little result that comes directly from the pile structure.
+## A Consequence — LIS or LDS of Size $\sqrt{n}$
 
-After running patience sorting on any sequence of $n$ numbers, let:
+After patience sorting on any sequence of $n$ numbers, let:
 
 - $p$ = number of piles = LIS length
-- $h$ = height of the tallest pile = LDS length (each pile is decreasing, so the tallest pile gives the longest decreasing subsequence)
+- $h$ = height of tallest pile = LDS length (each pile is a decreasing sequence)
 
-All $n$ cards had to go somewhere, so $n \leq p \times h$. If both $p$ and $h$ were less than $\sqrt{n}$, their product would be less than $n$ — but we just said the product is at least $n$. Contradiction. So one of them has to be $\geq \sqrt{n}$.
+Since all $n$ cards go into some pile: $n \leq p \times h$.
 
-**In plain words :** In any list of $n$ numbers, you are guaranteed to find either an increasing run or a decreasing run of length at least $\sqrt{n}$. You cannot avoid both.
+If both $p < \sqrt{n}$ and $h < \sqrt{n}$, then $p \times h < n$. Contradiction.
 
-As a concrete example — pick any 100 numbers in any order. No matter how clever the arrangement, somewhere in that list there must be either 10 numbers going up or 10 numbers going down.
+So at least one of $p$ or $h$ must be $\geq \sqrt{n}$.
+
+**Conclusion:** Every sequence of $n$ numbers has either a LIS of length $\geq \sqrt{n}$ or a LDS of length $\geq \sqrt{n}$.
+
+For example, any list of 100 numbers must have either 10 going up or 10 going down somewhere.
+
+---
 
 ## LIS of a Random Permutation
 
-What if the input is just a random shuffle?
+For a random shuffle of ${1, 2, \dots, n}$, there is no special structure. Both $p$ and $h$ stay around $\sqrt{n}$, so:
 
-A random shuffle has no pattern to it — no reason to have an unusually long increasing or decreasing run. So both $p$ and $h$ end up close to $\sqrt{n}$, and the LIS length lands around $c\sqrt{n}$ for some constant $c$.
+- With high probability, LIS length is $O(\sqrt{n})$
+- In expectation: $E[L_n] = \Theta(\sqrt{n})$
 
-Hammersley (1972) proved this rigorously — that $E[L_n] \sim c\sqrt{n}$ for some $c$. Running simulations made it pretty clear that $c = 2$, giving :
+Hammersley (1972) proved $E[L_n] \sim c\sqrt{n}$ for some constant $c$. Simulations pointed clearly to $c = 2$.
 
-$E[L_n] \sim 2\sqrt{n}$
-
-So if you take a random shuffle of 100 numbers, the LIS will be around $2\sqrt{100} = 20$. It will not jump around wildly either — it stays close to that value almost every time.
+---
 
 ## History — Why Did It Take So Long to Prove $c = 2$?
 
-People could see from simulations that the constant was 2. Proving it was another matter entirely.
+| Year | What happened |
+| --- | --- |
+| 1960s | Ulam poses the problem |
+| 1972 | Hammersley proves $E[L_n] \sim c\sqrt{n}$ but cannot find $c$ |
+| 1977 | Logan-Shepp and Vershik-Kerov independently prove $E[L_n] \sim 2\sqrt{n}$ |
+| 1999 | Baik-Deift-Johansson find the full distribution |
 
-**1972 — Hammersley** showed that $E[L_n]/\sqrt{n}$ settles to some constant as $n$ grows. His argument was clever but could not tell you what that constant actually was.
+The 1977 proof needed Young tableaux — a structure from algebra — and was far from obvious. The 1999 result was even more surprising:
 
-**1977 — Logan-Shepp and Vershik-Kerov** finally pinned it down : $E[L_n] \sim 2\sqrt{n}$. The proof had to pull in Young tableaux — a combinatorial object from algebra used to study symmetry — and carefully analyze what shape these tableaux converge to. It worked, but it was a long way from a card game.
+$$P!\left(\frac{L_n - 2\sqrt{n}}{n^{1/6}} \leq x\right) \to F(x) \quad \text{as } n \to \infty$$
 
-**1999 — Baik, Deift, and Johansson** went even further and found the full distribution of $L_n$ :
+where $F(x)$ is the Tracy-Widom distribution — the same law that describes the largest eigenvalue of a random matrix. Nobody expected a card game to connect to random matrix theory.
 
-$P!\left(\frac{L_n - 2\sqrt{n}}{n^{1/6}} \leq x\right) \to F(x) \quad \text{as } n \to \infty$
+The reason it took so long — LIS secretly touches combinatorics, representation theory, and random matrix theory. Each area needed different tools (Aldous and Diaconis, 1999).
 
-where $F(x)$ is the **Tracy-Widom distribution** — the same law that shows up when you study the largest eigenvalue of a random matrix. That connection was a genuine surprise. Nobody sat down expecting a card-sorting problem to have anything to do with random matrices.
+---
 
-The reason it took so long is that the LIS problem, despite looking straightforward, quietly touches three separate areas of mathematics — combinatorics, representation theory, and random matrix theory. Each layer needed its own tools to crack. The constant 2 took until 1977. The full picture took until 1999 (Aldous and Diaconis, 1999).
+## Practice Problems
 
-## Time Complexity Analysis
+**LeetCode:**
 
-For each element, binary search on $\textit{tails}$ takes $O(\log n)$ since $\textit{tails}$ holds at most $n$ elements, and the update (append or replace) takes $O(1)$. Processing all $n$ elements gives :
+- [300. Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+- [354. Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) — 2D LIS
+- [673. Number of Longest Increasing Subsequences](https://leetcode.com/problems/number-of-longest-increasing-subsequences/)
 
-$\text{Total Time Complexity} = O(n \log n)$
+**Codeforces:**
 
-**Comparison with** $O(n^2)$**:**
+- [340E — Iahub and Permutations](https://codeforces.com/problemset/problem/340/E)
+- [269B — Maximum Absurdity](https://codeforces.com/problemset/problem/269/B)
 
-| $n$ | $O(n^2)$ | $O(n \log n)$ |
-| --- | --- | --- |
-| 10,000 | 100 million ops | ~140,000 ops |
-| 1,000,000 | 1 trillion ops | ~20 million ops |
-
-## Space Complexity Analysis
-
-The $\textit{tails}$ array stores at most $n$ elements and no other auxiliary data structures are needed, so :
-
-$\text{Total Space Complexity} = O(n)$
+---
