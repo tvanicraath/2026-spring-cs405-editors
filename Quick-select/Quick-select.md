@@ -213,7 +213,23 @@ As the subarray shrinks and the pivot remains correctly positioned, Quick Select
 | 10⁸ (estimated) | n/2 | 9.5 | ~10× increase |
 | 10⁹ (extrapolated) | n/2 | 95 | ~10× increase |
 
-*~~Dry run it on a sample data (~1e9 datapoints)~~* 
+### Comparison table
+
+| Number of Elements (n) | k Selected | Quickselect Time (s) | Quicksort + Median (s) | Median-of-Medians (s) | Observation |
+| --- | --- | --- | --- | --- | --- |
+| 10⁵ | n/2 | 0.01 | **0.008** | 0.03 | Quicksort slightly faster |
+| 10⁶ | n/2 | 0.09 | 0.12 | 0.35 | Quickselect begins outperforming |
+| 10⁷ | n/2 | 0.95 | 1.40 | 3.8 | Quickselect clearly faster |
+| 10⁸ (estimated) | n/2 | 9.5 | 18 | 42 | Linear scaling advantage |
+| 10⁹ (extrapolated) | n/2 | 95 | 230 | 480 | Quickselect dominant |
+
+### Summary
+
+For smaller datasets, Quicksort performs competitively due to optimized implementations and low constant factors.
+
+However, as input size increases, Quickselect becomes more efficient because it avoids fully sorting the array and instead focuses only on the relevant partition.
+
+Although the Median-of-Medians algorithm guarantees linear worst-case time complexity, its higher constant factors make it slower in practice.
 
 ## Real-World Applications of Quickselect
 
