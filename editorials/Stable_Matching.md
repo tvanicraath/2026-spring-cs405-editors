@@ -62,7 +62,7 @@ In 1962, Gale and Shapley proposed the Deferred Acceptance Algorithm. Here, we a
 **Proof :** Consider pair $(m, w)$ where $P_M(m) \ne w$. According to the GS algorithm, two scenarios are possible:
 1. $m$ has proposed to $w$ and was rejected; this means $w$ prefers her current partner to $m$.
 2. $m$ has not proposed to $w$; this means $m$ prefers his current partner to $w$.
-Neither of the above scenario results in $(m, w)$ being a rogue pair. So there cannot be a rogue pair.
+Neither of the above scenarios makes $(m, w)$ a rogue pair, so no rogue pair can exist.
 ## Remarks
 ### Man-Optimality
 - Each man proposes to women in decreasing order of preference and gets rejected only when the woman has a strictly better option. Since any rejected woman is impossible for him in any stable matching, the algorithm effectively eliminates all partners that cannot appear in a stable solution.
