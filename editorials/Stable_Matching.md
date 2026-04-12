@@ -4,11 +4,11 @@
 ## Problem
 Consider a community with a set of $n$ men, $M$, and a set of $n$ women, $W$. Each man $m$ has a ranking of women representing his preferences. Similarly each woman $w$ has a ranking of her preferred men. The stable marriage problem asks to pair (match) the men and women in such a way that no two people prefer each other over their matched partners. More formally:
 - A matching, $P_M$, is a one-to-one mapping from $M$ to $W$ (or equivalently we can define a matching as a one-to-one mapping from $W$ to $M$).
-- A pair $(m, w)$ is a rogue pair iff:
+- A pair $(m, w)$ is a blocking pair (sometimes also called a rogue pair) iff:
     - $m$ and $w$ are not matched with each other in $P_M$.
     - $m$ prefers $w$ to his matched partner $P_M(m)$.
     - $w$ prefers $m$ to her matched partner $m_0$ where $w = P_M(m_0)$.
-- A matching is stable if it doesn’t have a rogue pair.
+- A matching is stable if it doesn’t have a blocking pair.
 How can we find a stable matching in general?
 ## Intuition
 In 1962, Gale and Shapley proposed the Deferred Acceptance Algorithm. Here, we assume that each man $m$ (woman $w$) ranks all the possible women (men), i.e. $m$’s ($w$’s) list is complete.
