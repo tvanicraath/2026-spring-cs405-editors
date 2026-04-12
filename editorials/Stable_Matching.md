@@ -30,7 +30,7 @@ In 1962, Gale and Shapley proposed the Deferred Acceptance Algorithm. Here, we a
     b. If w is unmatched:
         - Match m with w.
     c. Else:
-        - Let m0 = μ(w) be the current partner of w.
+        - Let m0 be the current partner of w, i.e. w = P_M(m0).
         - If w prefers m over m0:
             - Match w with m.
             - Set m0 as unmatched.
