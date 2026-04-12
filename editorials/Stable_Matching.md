@@ -56,7 +56,7 @@ In 1962, Gale and Shapley proposed the Deferred Acceptance Algorithm. Here, we a
 - Since $m$ is unmatched he has been rejected by all women.  
 - Since $w$ is unmatched she has never rejected a proposal.  
 - This is a contradiction since $w$ is in some position in $m$’s preference list.
-- So there are no any unmatched men.
+- So there are no unmatched men.
 ### Stable Matching
 **Claim :** The matching found by the GS algorithm is stable.                        
 **Proof :** Consider pair $(m, w)$ where $P_M(m) \ne w$. According to the GS algorithm, two scenarios are possible:
