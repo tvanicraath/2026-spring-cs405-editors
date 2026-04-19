@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>15 Puzzle — Human vs AI</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="app">
+
+    <header>
+      <h1>15 Puzzle A* Game</h1>
+    </header>
+
+    <div class="toolbar">
+      <button class="btn primary" id="btn-start">Start</button>
+      <button class="btn" id="btn-reset">Reset</button>
+      <button class="btn" id="btn-pause" disabled>Pause</button>
+    </div>
+
+    <div class="boards">
+
+      <!-- HUMAN -->
+      <div class="side">
+        <div class="side-head">
+          <span class="label human">Human</span>
+          <span class="moves" id="human-moves">0 moves</span>
+        </div>
+        <div class="grid" id="human-board"></div>
+        <p class="hint" id="human-hint">Use arrow keys or click a tile next to the empty space.</p>
+      </div>
+
+      <!-- AI -->
+      <div class="side">
+        <div class="side-head">
+          <span class="label ai">AI</span>
+          <span class="moves" id="ai-moves">0 moves</span>
+        </div>
+        <div class="grid" id="ai-board"></div>
+        <div class="stats">
+          <span class="s"><b>g(n)</b> <em id="ai-gn">0</em></span>
+          <span class="s"><b>f(n)</b> <em id="ai-fn">0</em></span>
+          <span class="s">explored <em id="ai-total">0</em></span>
+          <span class="s">left <em id="ai-left">—</em></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="overlay" id="overlay">
+    <div class="dialog">
+      <div class="dialog-emoji" id="d-emoji">🏆</div>
+      <h2 id="d-title"></h2>
+      <p id="d-sub"></p>
+      <div class="dialog-stats" id="d-stats"></div>
+      <div class="dialog-btns">
+        <button class="btn primary" id="btn-again">Play Again</button>
+        <button class="btn" id="btn-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

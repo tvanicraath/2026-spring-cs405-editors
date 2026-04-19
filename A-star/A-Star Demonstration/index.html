@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pathfinder Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== SETUP OVERLAY ===================== -->
+  <div id="setup-overlay" class="overlay">
+    <div class="setup-card">
+      <div class="setup-header">
+        <h1>Pathfinder</h1>
+        <p class="subtitle">Visualize pathfinding algorithms step by step</p>
+      </div>
+
+      <div class="setup-form">
+        <!-- Algorithm Selection -->
+        <div class="form-group">
+          <label>Algorithm</label>
+          <div class="algorithm-grid">
+            <label class="algo-card">
+              <input type="radio" name="algorithm" value="astar" checked />
+              <div class="algo-body">
+                <span class="algo-name">A* Search</span>
+                <span class="algo-desc">Uses heuristic for faster search</span>
+              </div>
+            </label>
+            <label class="algo-card">
+              <input type="radio" name="algorithm" value="dijkstra" />
+              <div class="algo-body">
+                <span class="algo-name">Dijkstra's</span>
+                <span class="algo-desc">Guaranteed shortest path</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Grid Size -->
+        <div class="form-group">
+          <label for="grid-size">Grid Size <span class="label-hint">(N × N)</span></label>
+          <div class="input-row">
+            <input type="number" id="grid-size" min="5" max="30" value="12" />
+            <span class="input-range">5 – 30</span>
+          </div>
+        </div>
+
+        <!-- Heuristic (only for A*) -->
+        <div class="form-group" id="heuristic-group">
+          <label>Heuristic Function</label>
+          <div class="heuristic-grid">
+            <label class="h-card">
+              <input type="radio" name="heuristic" value="manhattan" checked />
+              <div class="h-body">
+                <span class="h-name">Manhattan</span>
+                <span class="h-formula">|Δr| + |Δc|</span>
+                <span class="h-note">4-directional</span>
+              </div>
+            </label>
+            <label class="h-card">
+              <input type="radio" name="heuristic" value="diagonal" />
+              <div class="h-body">
+                <span class="h-name">Diagonal</span>
+                <span class="h-formula">max(|Δr|,|Δc|)</span>
+                <span class="h-note">8-directional</span>
+              </div>
+            </label>
+            <label class="h-card">
+              <input type="radio" name="heuristic" value="euclidean" />
+              <div class="h-body">
+                <span class="h-name">Euclidean</span>
+                <span class="h-formula">√(Δr²+Δc²)</span>
+                <span class="h-note">8-directional</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Seed -->
+        <div class="form-group">
+          <label for="wall-seed">
+            Wall Seed
+            <span class="label-hint">(reproducible layout)</span>
+          </label>
+          <div class="input-row">
+            <input type="number" id="wall-seed" min="1" value="42" />
+            <span class="input-range">any integer</span>
+          </div>
+        </div>
+
+        <button id="setup-start-btn" class="btn-launch">
+          <span class="btn-icon">▶</span>
+          Initialize Grid
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== MAIN APP ===================== -->
+  <div id="app" class="app hidden">
+
+    <!-- Header / Controls -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="brand-logo" id="algo-badge">A*</div>
+        <div class="brand-text">
+          <span class="brand-name">Pathfinder</span>
+          <span id="header-meta" class="brand-meta"></span>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <button id="btn-play"  class="ctrl play-btn"  title="Play (Space)">▶ Play</button>
+        <button id="btn-pause" class="ctrl pause-btn" title="Pause (Space)" disabled>⏸ Pause</button>
+        <button id="btn-reset" class="ctrl reset-btn" title="Reset (R)">↺ Reset</button>
+        <div class="speed-group">
+          <span class="speed-label">Speed</span>
+          <input type="range" id="speed-slider" min="1" max="10" value="5" />
+          <span id="speed-val">5</span>
+        </div>
+        <button id="btn-new-grid" class="ctrl new-btn" title="New Grid">⊞ New Grid</button>
+      </div>
+    </header>
+
+    <!-- Legend -->
+    <div class="legend-bar">
+      <div class="leg-item"><span class="leg-dot ld-start"></span>Start</div>
+      <div class="leg-item"><span class="leg-dot ld-goal"></span>Goal</div>
+      <div class="leg-item"><span class="leg-dot ld-current"></span>Current</div>
+      <div class="leg-item"><span class="leg-dot ld-exploring"></span>Exploring</div>
+      <div class="leg-item"><span class="leg-dot ld-open"></span>Open</div>
+      <div class="leg-item"><span class="leg-dot ld-closed"></span>Closed</div>
+      <div class="leg-item"><span class="leg-dot ld-wall"></span>Wall</div>
+      <div class="leg-item"><span class="leg-dot ld-path"></span>Path</div>
+    </div>
+
+    <!-- Main 3-column layout -->
+    <div class="workspace">
+
+      <!-- Left Panel: OPEN list -->
+      <aside class="side-panel left-panel">
+        <div class="panel-head open-head">
+          <span class="ph-title">Open List</span>
+          <span id="open-count" class="ph-count">0</span>
+        </div>
+        <div class="list-cols" id="list-header">
+          <span>Node</span><span>g</span><span>h</span><span>f</span>
+        </div>
+        <div id="open-list" class="node-list"></div>
+      </aside>
+
+      <!-- Center: Grid + Status -->
+      <main class="grid-area" id="grid-area">
+        <div id="grid-container"></div>
+        <div class="status-bar">
+          <span id="status-text">Ready — press Play to begin.</span>
+          <span id="step-counter">Step: 0</span>
+        </div>
+      </main>
+
+      <!-- Right Panel: CLOSED list -->
+      <aside class="side-panel right-panel">
+        <div class="panel-head closed-head">
+          <span class="ph-title">Closed List</span>
+          <span id="closed-count" class="ph-count">0</span>
+        </div>
+        <div class="list-cols" id="list-header-right">
+          <span>Node</span><span>g</span><span>h</span><span>f</span>
+        </div>
+        <div id="closed-list" class="node-list"></div>
+      </aside>
+
+    </div><!-- /workspace -->
+  </div><!-- /app -->
+
+  <!-- Floating tooltip -->
+  <div id="tooltip" class="tooltip hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
