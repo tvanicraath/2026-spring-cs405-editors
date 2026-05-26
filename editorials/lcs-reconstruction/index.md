@@ -1,4 +1,14 @@
-# LCS (Longest Common Subsequence)
++++
+draft = false
+type = "courses"
+courseImage = '../../bogo.png'
+courseCode = 'CS 405'
+courseName = 'Student Editorials'
+semester = 'Spring (Sem 2) 2026'
+title = 'CS405 - LCS Reconstruction in Linear Space'
+subheader = 'LCS Reconstruction in Linear Space'
+subheadertext = 'Uday Hapaliya'
++++
 
 ## Introduction
 
@@ -131,7 +141,6 @@ The DP table construction dominates, so the total time complexity is: $O(mn)$
 - Thus total space complexity is: $O(mn)$
 
 ---
-***
 
 # LCS: Space Optimization and Divide & Conquer Reconstruction
 
@@ -148,7 +157,7 @@ In this section, we will discuss:
 ## 1. **Space Optimization for LCS Length**
 
 $$
-dp[i][j] = \begin{cases}1 + dp[i - 1][j - 1] & \text{if } X[i] = Y[j] \\\max(dp[i - 1][j], dp[i][j - 1]) & \text{otherwise}\end{cases}
+dp[i][j] = \begin{cases}1 + dp[i - 1][j - 1] & \text{if } X[i] = Y[j] \\\max(dp[i - 1][j], dp[i][j - 1]) & \text{otherwise}\end{cases}
 $$
 
 If we observe carefully, to compute row $i$, we only need:
@@ -164,10 +173,8 @@ We can keep only two rows:
 - $curr[0..n]$
 
 After finishing a row, we copy curr into prev and move forward.
-
 Thus, space reduces to: $O(min⁡(m,n))$
-
-while time remains: $O(mn)$
+while time remains: $O(mn)$.
 
 ### Intuition
 
@@ -182,7 +189,6 @@ So storing more than one previous row is unnecessary for computing only length.
 ## 2. Why This Trick Does Not Work for Reconstruction
 
 When reconstructing LCS using backtracking, we rely on the entire DP table.
-
 While backtracking from $(m,n)$, we need to know:
 
 - Whether we came from top
@@ -190,7 +196,6 @@ While backtracking from $(m,n)$, we need to know:
 - Or from diagonal
 
 If we only store two rows, all earlier decisions are lost.
-
 So although we can compute the length in small space, we cannot reconstruct the sequence because:
 
 - Reconstruction requires historical DP information.
@@ -231,9 +236,7 @@ Instead of storing the whole table, we:
 The key idea is:
 
 If we split $X$ into two halves, then the LCS must also split at some position in $Y$.
-
 We try all possible split positions in $Y$ indirectly using forward and backward DP.
-
 We choose the position that maximizes:
 
 $$
@@ -246,7 +249,6 @@ where:
 - $L_2[n-j]$ = LCS length of second half of $X$ with remaining chars of $Y$
 
 This guarantees we split correctly.
-
 Then we recursively reconstruct:
 
 - LCS of first half
@@ -335,8 +337,7 @@ $$
 for some partition of $Y$.
 
 The question is:
-
-How do we find that correct partition?
+**How do we find that correct partition?**
 
 ### Forward and Backward Computation
 
@@ -366,7 +367,15 @@ we ensure:
 LCS satisfies optimal substructure:
 
 If a solution is optimal, its subproblems must also be optimal.
-
 Since we split at the position that preserves total optimal length, recursive calls also operate on optimal subproblems.
-
 Thus correctness follows by induction on string length.
+
+
+
+<div align="right">
+    {{< editorCard name="Uday Hapaliya" roll="UI24CS28" linkedin="uday-hapaliya-481ba131a" github="udayhapaliya" link="https://www.linkedin.com/in/uday-hapaliya-481ba131a" >}}
+</div>
+
+---
+
+{{< back "courses/2026-spring-cs405#core-contributors" "all editorials" >}}

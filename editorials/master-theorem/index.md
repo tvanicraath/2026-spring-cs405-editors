@@ -1,3 +1,16 @@
++++
+draft = false
+type = "courses"
+courseImage = '../../bogo.png'
+courseCode = 'CS 405'
+courseName = 'Student Editorials'
+semester = 'Spring (Sem 2) 2026'
+title = 'CS405 - Master Theorem Proof'
+subheader = 'Master Theorem Proof'
+subheadertext = 'Mahir Dalal'
++++
+
+
 ## Motivation: Divide and Conquer and Recurrence Relations
 
 Many efficient algorithms are based on the divide-and-conquer technique.
@@ -24,7 +37,7 @@ running time of such recurrences without solving them from scratch each time.
 
 The theorem applies to recurrences of the form:
 
-$T(n) = aT(n/b) + f(n)$
+$$T(n) = aT(n/b) + f(n)$$
 
 Here, $a$ represents the number of subproblems, each of size $n/b$ and
 $f(n)$ denotes the cost of dividing the problem and combining the results.
@@ -37,22 +50,19 @@ following three cases:
 
 **Case 1:**  
 If $f(n) = O(n^{\log_b a - \varepsilon})$ for some constant $\varepsilon > 0$,
-then the work done by the recursive calls dominates, and  
-$T(n) = \Theta(n^{\log_b a})$.
+then the work done by the recursive calls dominates, and $T(n) = \Theta(n^{\log_b a})$.
 
 **Case 2:**  
 If $f(n) = \Theta(n^{\log_b a})$, then the work is evenly distributed
-across all levels of recursion, and  
-$T(n) = \Theta(n^{\log_b a} \log n)$.
+across all levels of recursion, and $T(n) = \Theta(n^{\log_b a} \log n)$.
 
 **Case 3:**  
 If $f(n) = \Omega(n^{\log_b a + \varepsilon})$ for some constant $\varepsilon > 0$
-and the regularity condition holds, then the non-recursive work dominates, and  
-$T(n) = \Theta(f(n))$.
+and the regularity condition holds, then the non-recursive work dominates, and $T(n) = \Theta(f(n))$.
 
 ## Proof of the Master Theorem (Recursion Tree Method)
 
-![Recursion Tree](editors/recursion-tree.png)
+![Recursion Tree](recursion-tree.png)
 
 From the above recursion tree, we observe the structure of the divide-and-conquer process.
 At the root level, there is a single problem of size **n**. Each problem is
@@ -69,10 +79,10 @@ After **k** levels of recursion, there are
 
 So, the total work done at the **k**-th level is
 
-$O((n / b^k)^d) \cdot a^k
-= O(a^k (n / b^k)^d)$
+$$O\left(\left(\frac{n}{b^k}\right)^d\right) \cdot a^k
+= O\left(a^k \left(\frac{n}{b^k}\right)^d\right)$$
 
-$= O(n^d (a / b^d)^k)$.
+$$= O\left(n^d \left(\frac{a}{b^d}\right)^k\right)$$.
 
 After **$\log_b n$** levels, the subproblem size
 reduces to 1, which corresponds to the base case of the recursion.
@@ -80,32 +90,29 @@ reduces to 1, which corresponds to the base case of the recursion.
 Therefore, the total running time of the algorithm is obtained by
 summing the work done at each level:
 
-$T(n) = O(n^d \sum_{k=0}^{\log_b n} (a / b^d)^k)$.
+$$T(n) = O\left(n^d \sum_{k=0}^{\log_b n} \left(\frac{a}{b^d}\right)^k\right)$$.
 
 We have obtained the following expression for the running time:
 
-$T(n) = O(n^d \sum_{k=0}^{\log_b n} (a / b^d)^k)$.
-
+$$T(n) = O\left(n^d \sum_{k=0}^{\log_b n} \left(\frac{a}{b^d}\right)^k\right)$$.
 **Case 1:** **$a < b^d$**
 
 In this case, we have
 $a / b^d < 1$.
 So by the summation lemma we know that this series converges to a constant.
-
 Therefore, the total running time is dominated by the factor
 **$n^d$**, and we get
 
-$T(n) = O(n^d)$.
+$$T(n) = O(n^d)$$
 
 **Case 2:** **$a = b^d$**
 
 In this case, we have
 $a / b^d = 1$.
 Now as each term turns out to be 1 so sum turns out be $(\log_b n)$.
-
 Therefore, the total running time becomes
 
-$T(n) = O(n^d \log_b n)$.
+$$T(n) = O(n^d \log_b n)$$
 
 **Case 3:** **$a > b^d$**
 
@@ -113,27 +120,22 @@ In this case, we have
 $a / b^d > 1$.
 Therefore, the summation grows exponentially and is dominated by its last term,
 which is
-
-$(a / b^d)^{\log_b n}$.
+$$(a / b^d)^{\log_b n}$$
 
 Substituting this into the expression for $T(n)$, we get
 
-$T(n) = O(n^d (a / b^d)^{\log_b n})$.
+$$T(n) = O\left(n^d \left(\frac{a}{b^d}\right)^{\log_b n}\right)$$
 
 Using the identity
 
-$(a / b^d)^{\log_b n} = n^{\log_b a - d}$,
+$$\left(\frac{a}{b^d}\right)^{\log_b n} = n^{\log_b a - d}$$
 
 we obtain
 
-$T(n) = O(n^{\log_b a})$.
+$$T(n) = O(n^{\log_b a})$$
 
 **Theorem (Master Theorem):**  
-If
-
-$T(n) = aT(n / b) + O(n^d)$
-
-for constants
+If $T(n) = aT(n / b) + O(n^d)$ for constants
 **$a > 0$**, **$b > 1$**, and **$d \ge 0$**,
 then the running time satisfies the following bounds:
 
@@ -160,7 +162,7 @@ from the assumptions made in the proof.
 
 In the proof, the total running time is expressed as
 
-$T(n) = O(n^d \sum_{k=0}^{\log_b n} (a / b^d)^k)$.
+$$T(n) = O\left(n^d \sum_{k=0}^{\log_b n} \left(\frac{a}{b^d}\right)^k\right)$$
 
 The Master Theorem relies on the fact that this summation is a
 **geometric series**. The three cases arise from the three
@@ -179,7 +181,7 @@ Even when the subproblems are of equal size, the theorem may still fail
 if the non-recursive work does not fit cleanly into one of the three
 cases. Consider the recurrence
 
-$T(n) = 2T(n / 2) + n \log n$.
+$$T(n) = 2T(n / 2) + n \log n$$
 
 Here, we have **$a = 2$** and **$b = 2$**, so
 $n^{\log_b a} = n$.
@@ -191,3 +193,11 @@ any of the three cases of the Master Theorem.
 This example shows that although the Master Theorem is widely applicable,
 its cases are not exhaustive. Some divide-and-conquer recurrences fall
 outside its scope and require alternative methods of analysis.
+
+<div align="right">
+    {{< editorCard name="Mahir Dalal" roll="UI24CS18" github="mahirdll29" link="https://www.linkedin.com/in/mahirdll" >}}
+</div>
+
+---
+
+{{< back "courses/2026-spring-cs405#core-contributors" "all editorials" >}}

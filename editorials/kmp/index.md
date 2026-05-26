@@ -1,4 +1,15 @@
-# Knuth–Morris–Pratt (KMP) String Matching Algorithm
++++
+draft = false
+type = "courses"
+courseImage = '../../bogo.png'
+courseCode = 'CS 405'
+courseName = 'Student Editorials'
+semester = 'Spring (Sem 2) 2026'
+title = 'CS405 - KMP String Search'
+subheader = 'KMP String Search'
+subheadertext = 'Pranav Solanki'
++++
+
 
 ## Introduction
 
@@ -17,7 +28,7 @@ $$
 T[i \dots i+m-1] = P[0 \dots m-1]
 $$
 
----
+
 
 ## Real World Applications
 
@@ -30,35 +41,14 @@ String matching appears in many real-world systems:
 - Network packet inspection
 - Compiler lexical analysis
 
----
+
 
 ## Historical Background
 
-The KMP algorithm was developed by:
+The KMP algorithm was developed by Donald Knuth, James H. Morris, Vaughan Pratt in 1977. It was the first algorithm to solve string matching in $O(n + m)$ time. 
+Before KMP, the best known algorithm took $O(nm)$ time in worst case.
 
-- Donald Knuth
-- James H. Morris
-- Vaughan Pratt
 
-in 1977.
-
-It was the first algorithm to solve string matching in:
-
-$$
-O(n + m)
-$$
-
-time.
-
-Before KMP, the best known algorithm took:
-
-$$
-O(nm)
-$$
-
-time in worst case.
-
----
 
 ## Naive Algorithm
 
@@ -88,7 +78,7 @@ procedure NaiveSearch(T, P):
             print i
 ```
 
----
+
 
 ## Complexity Analysis of Naive Algorithm
 
@@ -101,27 +91,18 @@ Pattern = aaaaab
 
 At each position, almost full comparison happens.
 
-Time complexity:
-
-$$
-O(nm)
-$$
-
+Time complexity: $O(nm)$.
 This is inefficient for large inputs.
 
----
+
 
 ## Key Insight Behind KMP
 
 When mismatch occurs, naive algorithm restarts from beginning of pattern.
-
 KMP avoids this repetition by using information already known.
+It preprocesses the pattern to build an array called: **LPS Array** (Longest Proper Prefix which is also Suffix).
 
-It preprocesses the pattern to build an array called:
-
-## LPS Array (Longest Proper Prefix which is also Suffix)
-
-Definition:
+### Definition:
 
 $$
 LPS[i] =
@@ -131,7 +112,7 @@ $$
 
 Proper prefix means prefix not equal to whole string.
 
----
+
 
 ## Example of LPS
 
@@ -154,7 +135,7 @@ LPS:
 ```
 
 Explanation:
-
+```text
 At index 4:
 
 prefixes: a, aa, aab, aabd
@@ -163,24 +144,17 @@ suffixes: a, da, bda, abda
 common prefix and suffix = a
 
 length = 1
+```
 
----
 
 ## How KMP Uses LPS
 
 When mismatch happens at position $j$ in pattern,
-
 instead of restarting from 0,
-
-we jump to:
-
-$$
-j = LPS[j-1]
-$$
-
+we jump to $j = LPS[j-1]$.
 This avoids rechecking characters.
 
----
+
 
 ## KMP Algorithm
 
@@ -189,7 +163,7 @@ Two phases:
 1. Build LPS array
 2. Perform search using LPS
 
----
+
 
 ## Pseudocode: Compute LPS
 
@@ -221,7 +195,7 @@ procedure ComputeLPS(P):
                 i ← i + 1
 ```
 
----
+
 
 ## Pseudocode: KMP Search
 
@@ -258,9 +232,11 @@ procedure KMPSearch(T, P):
                 i ← i + 1
 ```
 
----
+
 
 ## Example Walkthrough (KMP Algorithm)
+
+![KMP Example](kmp.png)
 
 ### Text
 
@@ -274,69 +250,63 @@ ababc
 
 Length = 5
 
----
+
 
 ### Step 1: Compute LPS Array
 
 Pattern: ababc
 
-Index:   0 1 2 3 4  
-Chars:   a b a b c  
-LPS:     0 0 1 2 0  
+```text
+Index:   0 1 2 3 4 
+Chars:   a b a b c 
+LPS:     0 0 1 2 0 
+```
 
 Explanation:
 
-- LPS[0] = 0  
-- LPS[1] = 0  
-- LPS[2] = 1  (prefix "a" = suffix "a")  
-- LPS[3] = 2  (prefix "ab" = suffix "ab")  
-- LPS[4] = 0  
+```text
+- LPS[0] = 0 
+- LPS[1] = 0 
+- LPS[2] = 1  (prefix "a" = suffix "a") 
+- LPS[3] = 2  (prefix "ab" = suffix "ab") 
+- LPS[4] = 0 
+```
 
----
+
 
 ### Step 2: Matching Process
 
 We use two pointers:
 
-- i → text pointer  
-- j → pattern pointer  
+- i → text pointer 
+- j → pattern pointer 
 
----
+
 
 ### Matching Steps
 
-1. Match: ab ab  
-2. Mismatch at c vs a  
-3. Use LPS → j = LPS[j-1] = 2  
-4. Continue matching  
-5. Full pattern matches  
+1. Match: ab ab 
+2. Mismatch at c vs a 
+3. Use LPS → j = LPS[j-1] = 2 
+4. Continue matching 
+5. Full pattern matches 
 
----
+
 
 ### Final Match
 
-Pattern found at index:
-
-2
-
+Pattern found at index: 2.
 Because:
-
-T[2...6] = ababc
-
+`T[2...6] = ababc`
 matches the pattern.
 
----
-
-
-
----
 
 ## Proof of Correctness (KMP Algorithm)
 
 We prove that the KMP algorithm correctly finds the first occurrence of the pattern `P`
 in the text `T` without missing any valid match.
 
----
+
 
 ### Definitions
 
@@ -354,9 +324,9 @@ The KMP algorithm maintains two pointers:
 
 At any time:
 
-P[0...j-1] = T[i-j...i-1]
+$$ P[0...j-1] = T[i-j...i-1] $$
 
----
+
 
 ### Lemma 1: LPS Property
 
@@ -365,34 +335,29 @@ that is also a suffix ending at position `k`.
 
 This means:
 
-P[0 ... LPS[k]-1] = P[k-LPS[k]+1 ... k]
+$$ P[0 ... LPS[k]-1] = P[k-LPS[k]+1 ... k] $$
 
 So after a mismatch at position `k+1`, the first `LPS[k]` characters still match.
 
----
+
 
 ### Lemma 2: No Valid Match is Skipped
 
-Suppose we have matched `j` characters, and a mismatch occurs at:
-
-T[i] != P[j]
+Suppose we have matched `j` characters, and a mismatch occurs at
+$T[i] != P[j]$.
 
 So far:
-
-P[0...j-1] = T[i-j...i-1]
+$P[0...j-1] = T[i-j...i-1]$.
 
 From the LPS property:
-
-P[0...LPS[j-1]-1] = P[j-LPS[j-1]...j-1]
+$P[0...LPS[j-1]-1] = P[j-LPS[j-1]...j-1]$.
 
 This suffix already matches the corresponding part of `T`.
-
 Therefore, shifting `P` to position `LPS[j-1]` keeps all possible matches
 that could still succeed.
-
 No valid occurrence is skipped.
 
----
+
 
 ### Lemma 3: Progress is Guaranteed
 
@@ -406,7 +371,7 @@ the algorithm always makes progress.
 
 Thus, the algorithm terminates.
 
----
+
 
 ### Theorem: KMP Finds All Occurrences Correctly
 
@@ -415,22 +380,18 @@ We prove that KMP reports exactly all valid matches.
 #### Case 1: A Match is Reported
 
 When `j = m`, we have matched:
-
-P[0...m-1] = T[i-m...i-1]
+$P[0...m-1] = T[i-m...i-1]$.
 
 So a valid occurrence is found and correctly reported.
 
 #### Case 2: A Match Exists in T
 
 Consider any valid match of `P` starting at position `k` in `T`.
-
 By Lemma 2, KMP never skips any position that can start a match.
-
 By Lemma 3, the algorithm eventually reaches every such position.
-
 Therefore, this match will be detected.
 
----
+
 
 ### Conclusion
 
@@ -443,52 +404,33 @@ From the above lemmas:
 
 Hence, the KMP algorithm is correct.
 
----
+
 
 
 ## Time Complexity Analysis
 
-Building LPS:
+Building LPS: $O(m)$.
 
-$$
-O(m)
-$$
+Search phase: $O(n)$.
 
-Search phase:
-
-$$
-O(n)
-$$
-
-Total complexity:
-
-$$
-O(n + m)
-$$
-
+Total complexity: $O(n + m)$.
 Each character is processed at most once.
 
----
+
 
 ## Space Complexity
 
-Space used for LPS array:
+Space used for LPS array: $O(m)$.
 
-$$
-O(m)
-$$
 
----
 
 ## Why KMP is Optimal
 
 Naive algorithm rechecks characters unnecessarily.
-
 KMP avoids redundant comparisons.
-
 Thus it achieves optimal linear time complexity.
 
----
+
 
 ## Complete Implementation (C++)
 
@@ -563,7 +505,7 @@ vector<int> KMPSearch(string text, string pattern)
 }
 ```
 
----
+
 
 ## Applications in Competitive Programming
 
@@ -575,35 +517,25 @@ Common applications include:
 - Minimum string construction
 - Prefix-suffix problems
 
----
+
 
 ## Related Problems
 
 LeetCode:
 
-- Find the Index of the First Occurrence in a String  
-  https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
-
-- Shortest Palindrome  
-  https://leetcode.com/problems/shortest-palindrome/
+- [Find the Index of the First Occurrence in a String](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/)
+- [Shortest Palindrome](https://leetcode.com/problems/shortest-palindrome/)
 
 
 Codeforces:
 
-- Password (uses prefix function / KMP)  
-  https://codeforces.com/problemset/problem/126/B
+- [Password (uses prefix function / KMP)](https://codeforces.com/problemset/problem/126/B)
+- [Prefixes and Suffixes (classic prefix-function / KMP application)](https://codeforces.com/problemset/problem/432/D)
 
-- Prefixes and Suffixes (classic prefix-function / KMP application)  
-  https://codeforces.com/problemset/problem/432/D
 
----
 
 ## References
-
-Online Resources:
-
-- GeeksforGeeks — KMP Algorithm for Pattern Searching  
-  https://www.geeksforgeeks.org/dsa/kmp-algorithm-for-pattern-searching/
+[GeeksforGeeks — KMP Algorithm for Pattern Searching](https://www.geeksforgeeks.org/dsa/kmp-algorithm-for-pattern-searching/)
 
 ## Videos
 
@@ -615,7 +547,7 @@ These lectures provide excellent explanations of the KMP algorithm from intuitio
 
 [Knuth-Morris-Pratt (KMP) Algorithm | Abdul Bari](https://youtu.be/V5-7GzOfADQ)
 
----
+
 
 ## Conclusion
 
@@ -634,3 +566,11 @@ O(n + m)
 $$
 
 KMP remains fundamental in computer science, competitive programming, and real-world systems.
+
+<div align="right">
+    {{< editorCard name="Pranav Solanki" roll="UI24CS65" github="Pranav-solanki" link="https://pranav-solanki.github.io/Profile/" >}}
+</div>
+
+
+
+{{< back "courses/2026-spring-cs405#core-contributors" "all editorials" >}}

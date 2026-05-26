@@ -1,6 +1,21 @@
++++
+draft = false
+type = "courses"
+courseImage = '../../bogo.png'
+courseCode = 'CS 405'
+courseName = 'Student Editorials'
+semester = 'Spring (Sem 2) 2026'
+title = 'CS405 - Stable Marriage'
+subheader = 'Stable Marriage'
+subheadertext = 'Dharmik Umretiya'
++++
+
+
 ## Introduction
  Have you ever wondered how people get matched when money isn’t allowed to decide the outcome? Think of students getting colleges, workers getting jobs, or patients being matched to hospitals no bidding, just preferences. How do we ensure no two participants would rather leave their current match and pair up instead? This is where **stable matching** comes in: a concept so powerful that the Nobel Prize in Economic Sciences was awarded for it.  
-- We’ll be talking about how this works in this editorial, using the famous **Gale–Shapley algorithm**, introduced by David Gale and Lloyd Shapley.
+
+We’ll be talking about how this works in this editorial, using the famous **Gale–Shapley algorithm**, introduced by David Gale and Lloyd Shapley.
+
 ## Problem
 Consider a community with a set of $n$ men, $M$, and a set of $n$ women, $W$. Each man $m$ has a ranking of women representing his preferences. Similarly each woman $w$ has a ranking of her preferred men. The stable marriage problem asks to pair (match) the men and women in such a way that no two people prefer each other over their matched partners. More formally:
 - A matching, $P_M$, is a one-to-one mapping from $M$ to $W$ (or equivalently we can define a matching as a one-to-one mapping from $W$ to $M$).
@@ -19,8 +34,11 @@ In 1962, Gale and Shapley proposed the Deferred Acceptance Algorithm. Here, we a
     - Rejects all others (if any)
 - Rejected men propose to their **next preference**.
 - No man is left unmatched.
+
 **Observation 1 :** Men propose to women in decreasing order of preference.  
+
 **Observation 2 :** Once a woman is matched, she never becomes unmatched; she only "trades up."
+
 ## Algorithm
 
 ```text
@@ -85,3 +103,11 @@ Neither of the above scenarios makes $(m, w)$ a rogue pair, so no rogue pair can
     [Paper Link](http://www.columbia.edu/~yk2577/jointAllocation.pdf)
 - **Content Delivery Networks (CDNs):**  
     Stable matching can be applied in client–server models, where users are matched to servers to minimize latency, closely related to optimization problems like the travelling salesman problem.
+
+<div align="right">
+    {{< editorCard name="Dharmik Umretiya" roll="UI24CS79" github="dharmikumretiya" link="https://dharmikumretiya.space" >}}
+</div>
+
+
+
+{{< back "courses/2026-spring-cs405#core-contributors" "all editorials" >}}

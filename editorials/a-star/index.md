@@ -1,4 +1,20 @@
-### Explain pathfinding problem and briefly describe classical algos (BFS/DFS/Dijkstra)
++++
+draft = false
+type = "courses"
+courseImage = '../../bogo.png'
+courseCode = 'CS 405'
+courseName = 'Student Editorials'
+semester = 'Spring (Sem 2) 2026'
+title = 'CS405 - A* Search'
+subheader = 'A* Search'
+subheadertext = 'Rachit Singh'
++++
+
+## Demos
+- [A* Search Demo](demo)
+- [15 Puzzle: Play vs AI](15-puzzle)
+
+## Introduction
 
 In graph theory, the *shortest path problem* is to find a path between two nodes (vertices) that minimizes the total weight (cost) of its edges.
 
@@ -11,8 +27,7 @@ In graph theory, the *shortest path problem* is to find a path between two nodes
 BFS/DFS are uninformed (no heuristic), while Dijkstra uses exact path costs. A* builds on these by introducing a problem-specific heuristic to guide the search.
 
 ---
-
-### Explain the history of A* and its connections with AI
+## History of A* and its connections with AI
 
 A* (pronounced “A-star”) was first introduced in 1968 by Peter Hart, Nils Nilsson, and Bertram Raphael at the Stanford Research Institute.
 
@@ -28,7 +43,7 @@ A* is fundamentally a search algorithm designed to compute the shortest path bet
 
 ---
 
-### Define evaluation function/heuristics and admissible/perfect ones.
+## Heuristics
 
 In A*, each node (n) has:
 
@@ -46,7 +61,7 @@ In short, $f(n)=g(n)+h(n)$ ranks nodes for expansion, and choosing a good heuris
 
 ---
 
-### Why A* with an Admissible Heuristic is Optimal
+### Why A* with an Admissible Heuristic is Optimal?
 
 Intuitively, admissibility of $h$ ensures A* never overlooks an optimal path. If the heuristic $h(n)$ is **admissible** (i.e., $h(n)\le h^∗(n))$, then A* is guaranteed to find an optimal (shortest-cost) path. The classic proof (Hart et al. 1968) runs as follows:
 
@@ -215,3 +230,13 @@ Considering a graph, it may take us to travel all the edge to reach the destinat
 So the worse case time complexity is $O(E)$, where E is the number of edges in the graph
 
 ****Auxiliary Space**** In the worse case we can have all the edges inside the open list, so required auxiliary space in worst case is $O(V)$, where V is the total number of vertices.
+
+
+
+<div align="right">
+  {{< editorCard name="Rachit Singh" roll="UI24CS67" github="Rachit1801" link="https://www.instagram.com/rachitliveshere/" >}}
+</div>
+
+---
+
+{{< back "courses/2026-spring-cs405#core-contributors" "all editorials" >}}

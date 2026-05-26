@@ -1,4 +1,15 @@
-# Longest Increasing Subsequence (LIS) — Efficient Solution
++++
+draft = false
+type = "courses"
+courseImage = '../../bogo.png'
+courseCode = 'CS 405'
+courseName = 'Student Editorials'
+semester = 'Spring (Sem 2) 2026'
+title = 'CS405 - LIS in $O(n \log n)$ Time'
+subheader = 'LIS in $O(n \log n)$ Time'
+subheadertext = 'Jeels Hapani'
++++
+
 
 ## Problem Overview
 
@@ -237,3 +248,11 @@ The reason it took so long — LIS secretly touches combinatorics, representatio
 - [269B — Maximum Absurdity](https://codeforces.com/problemset/problem/269/B)
 
 ---
+
+<div align="right">
+    {{< editorCard name="Jeels Hapani" roll="UI24CS29" github="jeels-sketch" link="https://www.linkedin.com/in/jeels-hapani-24b841324" >}}
+</div>
+
+---
+
+{{< back "courses/2026-spring-cs405#core-contributors" "all editorials" >}}

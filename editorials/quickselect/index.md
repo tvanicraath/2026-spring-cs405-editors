@@ -1,9 +1,25 @@
-# Quick-select
++++
+draft = false
+type = "courses"
+courseImage = '../../bogo.png'
+courseCode = 'CS 405'
+courseName = 'Student Editorials'
+semester = 'Spring (Sem 2) 2026'
+title = 'CS405 - QuickSelect'
+subheader = 'QuickSelect'
+subheadertext = 'Parth Gupta'
++++
+
+
+
 
 > Quick-sort’s brother (kinda, but doesn’t sort stuff, more below…)
 > 
 
-### ’ The basic essence is that it’s an algorithm used to find the **k-th smallest element** in an unsorted list without fully sorting it. Instead of arranging everything like Quick Sort does, Quick Select just focuses on the part of the array that act**ually matters ’**
+## Introduction
+
+
+>The basic essence is that it’s an algorithm used to find the **k-th smallest element** in an unsorted list without fully sorting it. Instead of arranging everything like QuickSort does, QuickSelect just focuses on the part of the array that actually matters.
 
 INTUITION:
 
@@ -17,17 +33,17 @@ The naive approach to finding the k-th smallest element is to first sort the ent
 
 - A look at the naive one
 
-Quick Select provides a more efficient alternative. It is a selection algorithm based on the partitioning principle of Quick Sort. Instead of sorting the entire array, it partitions the data around a chosen pivot and recursively processes only the portion that may contain the k-th smallest element. By discarding half of the data at each step (on average),
+QuickSelect provides a more efficient alternative. It is a selection algorithm based on the partitioning principle of QuickSort. Instead of sorting the entire array, it partitions the data around a chosen pivot and recursively processes only the portion that may contain the k-th smallest element. By discarding half of the data at each step (on average),
 
-**Quick Select achieves an average time complexity of O(n).**
+**QuickSelect achieves an average time complexity of O(n).**
 
-Thus, Quick Select is preferred when:
+Thus, QuickSelect is preferred when:
 
 - Only the k-th smallest (or largest) element is needed.
 - The dataset is large.
 - Performance optimization is important.
 
-In summary, Quick Select improves efficiency by avoiding unnecessary sorting and focusing only on the relevant portion of the data, making it asymptotically faster than the naive sorting-based approach for this problem.
+In summary, QuickSelect improves efficiency by avoiding unnecessary sorting and focusing only on the relevant portion of the data, making it asymptotically faster than the naive sorting-based approach for this problem.
 
 ***Before starting Quick-Select, we have a contendor for this same problem….***
 
@@ -35,7 +51,7 @@ In summary, Quick Select improves efficiency by avoiding unnecessary sorting and
 
 The **Median-of-Medians** algorithm is a deterministic selection algorithm used to find the k-th smallest element in an unsorted array in **worst-case linear time O(n)**.
 
-It improves upon basic Quick Select by choosing a *good pivot* in a systematic way rather than randomly.
+It improves upon basic QuickSelect by choosing a *good pivot* in a systematic way rather than randomly.
 
 **Working idea (briefly):**
 
@@ -52,8 +68,8 @@ By carefully choosing the pivot, the algorithm guarantees that a fixed fraction 
 **Shortcomings:**
 
 - **High constant factors:** Although it is O(n) in the worst case, the number of operations per step is relatively large.
-- **More complex implementation:** Compared to Quick Select, it is harder to implement and understand.
-- **Slower in practice:** For most practical datasets, randomized Quick Select performs faster despite its O(n²) worst case, because that worst case is rare.
+- **More complex implementation:** Compared to QuickSelect, it is harder to implement and understand.
+- **Slower in practice:** For most practical datasets, randomized QuickSelect performs faster despite its O(n²) worst case, because that worst case is rare.
 
 In summary, Median-of-Medians guarantees strong theoretical performance but is often less efficient in real-world applications due to overhead
 
@@ -75,7 +91,7 @@ Output: 10`
 
 ### THE BIG-IDEA
 
-It is based on the same partitioning idea used in Quick Sort, but instead of recursively sorting both halves, it only continues with the part that contains the desired element.
+It is based on the same partitioning idea used in QuickSort, but instead of recursively sorting both halves, it only continues with the part that contains the desired element.
 
 ### Basic Working Steps:
 
@@ -92,8 +108,8 @@ It is based on the same partitioning idea used in Quick Sort, but instead of rec
     - The pivot is placed in its correct sorted position.
 3. **Check the Pivot Position**
     - If the pivot’s position equals k, then it is the k-th smallest element.
-    - If k is smaller than the pivot’s position, apply Quick Select to the left subarray.
-    - If k is larger, apply Quick Select to the right subarray.
+    - If k is smaller than the pivot’s position, apply QuickSelect to the left subarray.
+    - If k is larger, apply QuickSelect to the right subarray.
 4. **Repeat**
     
     Continue the process only on the relevant subarray until the k-th element is found.
@@ -191,7 +207,7 @@ If the pivot is at index **p**, then it is the (p+1)-th smallest element.
 
 Each step reduces the problem size while preserving the search for the correct element.
 
-As the subarray shrinks and the pivot remains correctly positioned, Quick Select will eventually return the correct k-th smallest element.
+As the subarray shrinks and the pivot remains correctly positioned, QuickSelect will eventually return the correct k-th smallest element.
 
 ### Time Complexity
 
@@ -247,3 +263,13 @@ Common use cases include:
 ### **End of Quick-Selection, Thanks!!**
 
 ![soul-terry.gif](soul-terry.gif)
+
+
+
+<div align="right">
+    {{< editorCard name="Parth Gupta" roll="UI24CS57" github="Parth-210" link="https://www.instagram.com/sudo_pg/" >}}
+</div>
+
+---
+
+{{< back "courses/2026-spring-cs405#core-contributors" "all editorials" >}}
